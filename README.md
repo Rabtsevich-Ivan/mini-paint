@@ -24,6 +24,6 @@ A single collection called images stores documents, where each has 3 fields:
 ## Application stack
 (Stack will be updated when technology get implemented)
 
-React, React Hook Form, React Router, Firebase(Storage, Firestore, Auth)
+React, React Hook Form, React Router, Typescript, Firebase(Storage, Firestore, Auth)
 
 To learn React, check out the [React documentation](https://reactjs.org/).
