@@ -1,0 +1,164 @@
+/* Main styles */
+* {
+  box-sizing: border-box;
+} 
+
+/* Variables */
+:root {
+  --btn-save: #80bdff;
+}
+
+/* Utility styles */
+#canvas {
+  border: 2px solid black;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+.btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  bottom: 0;
+  outline: 0;
+  border: 0;
+  width: 100%;
+  border-radius: 0;
+  text-decoration: none;
+  padding: 0.5rem;
+}
+.btn--save {
+  background-color: var(--btn-save);
+}
+.btn--color {
+  border: none;
+  width: 100%;
+  height: 28px;
+  padding: 0;
+  cursor: pointer;
+}
+.btn--submit {
+  background-color: #493;
+  color: #fff;
+  padding: .7rem;
+  margin-top: 1.5rem;
+  font-size: 16px;
+}
+.btn--submit:hover {
+  background-color: rgb(65, 173, 44);
+}
+
+/* Forms */
+.main-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+}
+.form-wrapper {
+  min-width: 400px;
+  padding: 2rem;
+  border: 1px solid rgb(204, 198, 198);
+  border-radius: 5px;
+  line-height: 1.8;
+  font-size: 1.1rem;
+}
+.form-title {
+  text-align: center;
+}
+.form-group {
+  margin-bottom: 10px;
+}
+.form-group label {
+  font-size: 20px;
+}
+.form-control {
+  display: block;
+  width: 100%;
+  padding: 0.7rem 0.9rem;
+  outline: none;
+  border: 1px solid rgb(204, 198, 198);
+}
+.form-control:focus {
+  border: 1px solid rgb(65, 173, 44);
+}
+.form-reminder {
+  text-align: center;
+}
+
+
+
+/* Header Component */
+.nav-bar > ul {
+  display: flex;
+  justify-content: flex-end;
+  margin-left: auto;
+  list-style: none;
+  margin: 0;
+  padding-top: 2px;
+}
+.nav-bar > ul > li:hover > .nav-link {
+  background-color: gray;
+  color: #fff;
+}
+.nav-bar .nav-link {
+  text-decoration: none;
+  display: block;
+  padding: 15px 20px;
+}
+hr {
+  margin-top: 2px;
+}
+
+/* Home Page */
+.grid-wrap {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-gap: 5px;
+}
+.img-wrap {
+  height: 300px;
+  width: 300px;
+}
+.img-wrap > img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Paint Page */
+.paint-wrapper {
+  display: flex;
+}
+.paint-wrapper .paint-control {
+  padding: 10px;
+  border: 1px solid black;
+  width: 150px;
+  height: 500px;
+}
+.paint-wrapper .paint-area {
+  width: 100%;
+  height: 300px;
+}
+
+.tool-section {
+  padding-bottom: 1rem;
+}
+.tool-section__title {
+  padding-bottom: 0.5rem;
+}
+.tool-grid {
+  display: grid;
+  grid-gap: 2px;
+  grid-template-columns: repeat(4, 1fr);
+}
+.tool-grid .tool-btn {
+  padding: 0.25rem 0.3rem;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
