@@ -1,46 +1,46 @@
-import React, { FC } from 'react'
+import React, { FC } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import HomePage from '../../../pages/Home/HomePage';
-import PaintPage from '../../../pages/paint/PaintPage';
-import PropTypes from 'prop-types';
 import { useAuth } from '../../contexts/AuthContext';
+import { auth } from '../../firebase/firebase';
+import * as Styled from './styled';
+import { HeaderProps } from './types';
 
-export const Header: FC<Props> = ({ condition }) => {
-    const { currentUser, logout } = useAuth();
-    const history = useHistory();
+export const Header: FC<HeaderProps> = ({ condition }) => {
+  const { logout } = useAuth();
+  const history = useHistory();
 
-    async function handleLogout() {
-        try {
-            await logout()
-            history.push('/login');
-        } catch {
+  async function handleLogout() {
+    try {
+      await logout();
+      history.push('/login');
+    } catch {}
+  }
 
-        }
-    }
+  return (
+    <header>
+      <div className='container'>
+        <nav className='nav-bar'>
+          <Styled.NavList>
+            {condition ? (
+              <Styled.NavListItem>
+                <Link to='/'>Images</Link>
+              </Styled.NavListItem>
+            ) : (
+              <Styled.NavListItem>
+                <Link to='/paint'>Paint</Link>
+              </Styled.NavListItem>
+            )}
 
-    return (
-        <header>
-            <div className="container">
-                <nav className="nav-bar">
-                    <ul>
-                        { condition ? 
-                              <li><Link to='/' className="nav-link">Images</Link></li> 
-                            : <li><Link to='/paint' className="nav-link">Paint</Link></li>
-                        }
-                        <li><a className="nav-link" onClick={handleLogout}>Sign Out</a></li>
-                        <li><a className="nav-link">{currentUser.email}</a></li>
-                    </ul>
-                </nav>
-                <hr />
-            </div>
-        </header>
-    )
-}
-
-interface Props {
-    condition: boolean,
-}
-
-Header.propTypes = {
-    condition: PropTypes.bool
-}
+            <Styled.NavListItem>
+              <a onClick={handleLogout}>Sign Out</a>
+            </Styled.NavListItem>
+            <Styled.NavListItem>
+              <a className='focused'>{auth.currentUser.email}</a>
+            </Styled.NavListItem>
+          </Styled.NavList>
+        </nav>
+        <Styled.Hr />
+      </div>
+    </header>
+  );
+};

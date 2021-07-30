@@ -1,27 +1,25 @@
-import React from 'react';
+import React, { FC } from 'react';
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import firebase from 'firebase/app';
 import "firebase/auth";
-import { auth } from './firebase';
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
+import { AuthProvider } from './core/contexts/AuthContext';
 import HomePage from './pages/Home/HomePage';
-import PaintPage from './pages/paint/PaintPage'
+import PaintPage from './pages/Paint/PaintPage'
 import LoginPage from './pages/Auth/Login/LoginPage';
 import SignUpPage from './pages/Auth/SignUp/SignUpPage';
-import { AuthProvider } from './core/contexts/AuthContext';
 import PrivateRoute from './core/components/PrivateRoute/PrivateRoute';
-
 import './App.css';
 
-function App() {
+
+const App: FC = () => {
   return (
     <AuthProvider>
       <BrowserRouter>
         <Switch>
           <Route exact path='/signup' component={SignUpPage} />
           <Route exact path='/login' component={LoginPage} />
-          <Route exact path='/paint' component={PaintPage} />
+          <PrivateRoute exact path='/paint' component={PaintPage} /> 
           <PrivateRoute exact path='/' component={HomePage} /> 
-          {/*<Redirect to='/login' />*/}
         </Switch>
       </BrowserRouter>
     </AuthProvider>
