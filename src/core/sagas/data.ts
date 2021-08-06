@@ -1,40 +1,23 @@
 import { auth } from '../firebase/firebase';
-import { fetchImages, fetchImagesSuccess } from './../actions/data';
+import { fetchImagesFailed, fetchImagesSuccess } from './../actions/data';
 import { getData } from '../services/data';
 import { put, call, takeEvery } from '@redux-saga/core/effects';
-import { FETCH_IMAGES } from '../constants/constants';
-import { projectFirestore } from '../firebase/firebase';
+import { ImagesActionTypes } from '../constants/actionTypes';
+import { ImageInterface } from '../interfaces/image';
+import { Observable } from 'redux';
 
-//changeCompanySaga(company)
 export function* fetchImagesWorker(): Generator {
   try {
-    //const data = yield call(getData, auth.currentUser);
-    const data:any = yield call([
-      projectFirestore
-        .collection('images')
-        .orderBy('createdAt', 'desc')
-        .where('user', '==', auth.currentUser.email),
-      projectFirestore.collection('images').get,
-    ]);
-    console.log(data);
-
-    let daf: any = [];
-    data.forEach((el: any) => {
-        daf.push(el.data());
-    });
-    console.log(daf)
-
-    if (!daf) {
-      yield put(fetchImagesSuccess(['something is wrong']));
-    } else {
-      yield put(fetchImagesSuccess(daf));
-    }
+    //const data: ImageInterface[] = yield call(getData, auth.currentUser);
+    const data = yield call(getData, auth.currentUser);
+    console.log(data)
+    yield put(fetchImagesSuccess(data));
   } catch (e) {
-    yield alert('error at fetching images');
+    yield put(fetchImagesFailed(e.message));
   }
 }
 
-export function* imagesWatcher() {
+export function* imagesWatcher(): Generator {
   //keep track of dispatch(action) and runs worker
-  yield takeEvery(FETCH_IMAGES, fetchImagesWorker);
+  yield takeEvery(ImagesActionTypes.FETCH_IMAGES, fetchImagesWorker);
 }

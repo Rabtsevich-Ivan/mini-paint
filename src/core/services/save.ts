@@ -5,7 +5,7 @@ import {
     timestamp,
   } from './../firebase/firebase';
 
-export const saveData = (imageName: string, blob: Blob, user: any) => {
+export const saveData = (imageName: string, blob: Blob, user: any): void => {
   const storageRef = projectStorage.ref(imageName);
   const collectionRef = projectFirestore.collection('images');
   storageRef.put(blob).on('state_changed', async () => {

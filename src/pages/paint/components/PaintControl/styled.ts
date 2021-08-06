@@ -24,17 +24,14 @@ export const ToolGrid = styled.div`
 `;
 
 export const ToolBtn = styled.button`
-  padding: 0.25rem 0.3rem;
+  padding: 7px;
   width: 100%;
   height: 100%;
   cursor: pointer;
 `;
 
 export const CanvasSaveBtn = styled.button`
-    ${Btn};
-    background-color: var(--btn-save);
+  ${Btn};
+  background-color: var(--btn-save);
 `;
 
-export const CanvasClearBtn = styled.button`
-  ${Btn};
-`;

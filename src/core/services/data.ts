@@ -1,21 +1,14 @@
 import { projectFirestore } from '../firebase/firebase';
-import { fetchImagesSuccess } from '../actions/data';
+import { ImageInterface } from './../interfaces/image';
 
-export const getData = (user: any) => {
-  projectFirestore
+
+export const getData = (user: any): Promise<ImageInterface[]> => {
+  return projectFirestore
     .collection('images')
     .orderBy('createdAt', 'desc')
     .where('user', '==', user.email)
     .get()
-    .then((querySnapshot) => {
-      let documents: Array<any> = [];
-      console.log('doing file')
-      querySnapshot.forEach((doc) => {
-        documents.push({ ...doc.data(), id: doc.id });
-      });
-      console.log(documents);
-    })
-    // .catch((err) => {
-    //   console.log('Error getting queries', err);
-    // });
+    .then((querySnapshot) =>
+      querySnapshot.docs.map((doc: any) => ({ ...doc.data(), id: doc.id }))
+    );
 };

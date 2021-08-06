@@ -1,19 +1,1 @@
-/* Utility styles */
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
-}
 
-/* Forms */
-
-.form-control {
-  display: block;
-  width: 100%;
-  padding: 0.7rem 0.9rem;
-  outline: none;
-  border: 1px solid rgb(204, 198, 198);
-}
-.form-control:focus {
-  border: 1px solid rgb(65, 173, 44);
-}

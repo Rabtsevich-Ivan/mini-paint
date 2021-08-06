@@ -1,25 +1,26 @@
 import React, { FC } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
-import { auth } from '../../firebase/firebase';
+import { logout } from '../../actions/auth';
 import * as Styled from './styled';
 import { HeaderProps } from './types';
+import { useDispatch, useSelector } from 'react-redux';
 
 export const Header: FC<HeaderProps> = ({ condition }) => {
-  const { logout } = useAuth();
   const history = useHistory();
+  const dispatch = useDispatch();
+  const email = useSelector((state:any) => state.firebase.auth.email)
 
-  async function handleLogout() {
-    try {
-      await logout();
-      history.push('/login');
-    } catch {}
-  }
+  const handleLogout = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    dispatch(logout());
+    history.push('/login');
+  };
 
   return (
     <header>
-      <div className='container'>
+      <Styled.Container condition={condition} >
         <nav className='nav-bar'>
+          { condition ? <h1>Navigation</h1> : '' }
           <Styled.NavList>
             {condition ? (
               <Styled.NavListItem>
@@ -35,12 +36,12 @@ export const Header: FC<HeaderProps> = ({ condition }) => {
               <a onClick={handleLogout}>Sign Out</a>
             </Styled.NavListItem>
             <Styled.NavListItem>
-              <a className='focused'>{auth.currentUser.email}</a>
+              <a className='focused'>{email}</a>
             </Styled.NavListItem>
           </Styled.NavList>
         </nav>
         <Styled.Hr />
-      </div>
+      </Styled.Container>
     </header>
   );
 };

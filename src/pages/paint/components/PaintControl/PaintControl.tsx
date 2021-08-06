@@ -1,7 +1,13 @@
 import React, { FC } from 'react';
 import * as Styled from './styled';
 import { ControlProps } from './types';
+import Button from '../../../../core/components/Buttons/Button';
+import { Header } from '../../../../core/components/Header/Header';
+import { useDispatch, useSelector } from 'react-redux';
+import { showModal } from '../../../../core/actions/modal';
+import Modal from '../../../../core/components/Modal/Modal';
 
+//export const PaintControl: FC<{canvas: HTMLCanvasElement;handleBrushWidth: (e: React.ChangeEvent<HTMLInputElement>) => void; ...}> = ({
 export const PaintControl: FC<ControlProps> = ({
   handleControl,
   context,
@@ -11,8 +17,12 @@ export const PaintControl: FC<ControlProps> = ({
   handleBrushColor,
   handleBrushWidth,
 }) => {
+  const dispatch = useDispatch();
+  const modalStatus = useSelector((state: any) => state.modal.modal); 
+
   return (
     <>
+      <Header condition={true} />
       <Styled.ToolSection>
         <Styled.ToolSectionTitle>Brush Color</Styled.ToolSectionTitle>
         <Styled.BtnColor
@@ -88,30 +98,42 @@ export const PaintControl: FC<ControlProps> = ({
               <i className='fas fa-square-full'></i>
             </Styled.ToolBtn>
           </div>
+          <div>
+            <Styled.ToolBtn
+              onClick={() => {
+                handleControl('Star');
+              }}
+              id='star'
+            >
+              <i className="fas fa-star"></i>
+            </Styled.ToolBtn>
+          </div>
         </Styled.ToolGrid>
       </Styled.ToolSection>
 
       <Styled.ToolSection>
-        <Styled.CanvasSaveBtn
+        <Button
           onClick={() => {
-            handleSave(canvas);
+            dispatch(showModal());
           }}
           id='canvas-save'
+          btnType='canvasSave'
         >
           Save
-        </Styled.CanvasSaveBtn>
+        </Button>
       </Styled.ToolSection>
 
       <Styled.ToolSection>
-        <Styled.CanvasClearBtn
+        <Button
           onClick={() => {
             handleClear(context, canvas);
           }}
           id='canvas-clear'
         >
           Clear
-        </Styled.CanvasClearBtn>
+        </Button>
       </Styled.ToolSection>
+      { modalStatus && <Modal canvas={canvas} handleSave={handleSave} /> }
     </>
   );
 };

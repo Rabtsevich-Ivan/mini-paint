@@ -1,22 +1,28 @@
-import React, { useState, FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
-import { useAuth } from './../../../../../core/contexts/AuthContext';
+import { useDispatch } from 'react-redux';
+import { login } from '../../../../../core/actions/auth';
 import {
   FormTitle,
   FormGroup,
   FormError,
   FormGroupLabel,
-  FormSubmitBtn,
   FormControl,
 } from './../../../../../global-styles';
 import { Inputs } from '../../../../../core/interfaces/inputs';
+import { auth } from '../../../../../core/firebase/firebase';
+import Button from '../../../../../core/components/Buttons/Button';
+import { useSelector } from 'react-redux';
+import { isEmpty } from 'react-redux-firebase';
 
 export const LoginForm: FC = () => {
-  const { login } = useAuth();
+  const dispatch = useDispatch();
   const history = useHistory();
-  const [isHidden, setIsHidden] = useState(true);
+  const errorStatus = useSelector((state: any) => state.auth.error);
+  //const logStatus = useSelector((state: any) => state.auth.logStatus);
+  const auth = useSelector((state: any) => state.firebase.auth)
 
   // Submit Handler
   const {
@@ -24,15 +30,17 @@ export const LoginForm: FC = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>();
-  async function onSubmit(data: any) {
-    try {
-      await login(data.email, data.password);
-      history.push('/');
-    } catch (e) {
-      alert('Incorrect data!');
-      setIsHidden(false);
-    }
+  const onSubmit = (data: any) => {
+    dispatch(login(data.email, data.password));
+  };
+
+  if (!isEmpty(auth)) {
+    history.push('/');
   }
+
+  // if (auth.currentUser) {
+     
+  // }
 
   return (
     <form action='' onSubmit={handleSubmit(onSubmit)}>
@@ -67,10 +75,11 @@ export const LoginForm: FC = () => {
           render={({ message }) => <FormError>{message}</FormError>}
         />
       </FormGroup>
-      <FormError id='sub-error' hidden={isHidden}>
-        Incorrect email or password
-      </FormError>
-      <FormSubmitBtn type='submit' value='Log in' />
+      {errorStatus && (
+        <FormError id='sub-error'>Incorrect email or password</FormError>
+      )}
+
+      <Button btnType='formBtn' as='input' type='submit' value='Log in' />
     </form>
   );
 };

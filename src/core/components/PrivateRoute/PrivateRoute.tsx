@@ -1,19 +1,18 @@
 import React, { FC, useState, useEffect } from 'react';
 import { Route, Redirect, RouteProps } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
+import { auth } from '../../firebase/firebase';
+import { useSelector } from 'react-redux';
+import { isLoaded, isEmpty } from 'react-redux-firebase';
 
 const PrivateRoute: FC<Props> = ({ component: Component, ...rest }) => {
-  const { currentUser } = useAuth();
-
-  if (!currentUser) {
-    return <div></div>;
-  }
+  //const logStatus = useSelector((state: any) => state.auth.logStatus);
+  const auth = useSelector((state: any) => state.firebase.auth)
 
   return (
     <Route
       {...rest}
       render={(props) => {
-        return currentUser ? (
+        return isLoaded(auth) && !isEmpty(auth) ? (
           <Component {...props} />
         ) : (
           <Redirect to='/login' />

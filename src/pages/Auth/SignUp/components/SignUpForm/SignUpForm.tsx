@@ -1,20 +1,33 @@
-import React, { useState } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
-import { useAuth } from './../../../../../core/contexts/AuthContext';
+import { useDispatch } from 'react-redux';
+import { auth } from '../../../../../core/firebase/firebase';
 import {
   FormTitle,
   FormGroup,
   FormError,
   FormGroupLabel,
-  FormSubmitBtn,
+  FormControl,
 } from './../../../../../global-styles';
 import { Inputs } from '../../../../../core/interfaces/inputs';
+import { signup } from '../../../../../core/actions/auth';
+import Button from '../../../../../core/components/Buttons/Button';
 
-export default function SignUpForm() {
-  const { signup } = useAuth();
+export const SignUpForm: FC = () => {
   const history = useHistory();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // auth.onAuthStateChanged return method, which will
+    // delete this listener when we unmount this component
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        history.push('/');
+      }
+    });
+  }, []);
 
   // Submit Handler
   const {
@@ -23,8 +36,8 @@ export default function SignUpForm() {
     formState: { errors },
   } = useForm<Inputs>();
   function onSubmit(data: any) {
-    signup(data.email, data.password);
-    history.push('/');
+    dispatch(signup(data.email, data.password));
+    //history.push('/');
   }
 
   return (
@@ -32,9 +45,8 @@ export default function SignUpForm() {
       <FormTitle>SignUp Form</FormTitle>
       <FormGroup>
         <FormGroupLabel htmlFor='email'>Enter your email</FormGroupLabel>
-        <input
+        <FormControl
           {...register('email', { required: 'Email is required' })}
-          className='form-control'
           name='email'
           id='email'
           type='email'
@@ -49,9 +61,8 @@ export default function SignUpForm() {
 
       <FormGroup>
         <FormGroupLabel htmlFor='password'>Enter your Password</FormGroupLabel>
-        <input
+        <FormControl
           {...register('password', { required: 'Password is Required ' })}
-          className='form-control'
           name='password'
           id='password'
           type='password'
@@ -62,7 +73,9 @@ export default function SignUpForm() {
           render={({ message }) => <FormError>{message}</FormError>}
         />
       </FormGroup>
-      <FormSubmitBtn type='submit' value='Sign Up' />
+      <Button btnType='formBtn' as='input' type='submit' value='Sign Up' />
     </form>
   );
-}
+};
+
+export default SignUpForm;

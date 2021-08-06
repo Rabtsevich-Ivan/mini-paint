@@ -18,3 +18,13 @@ export const Img = styled.img`
   max-width: 100%;
   height: auto;
 `;
+
+export const Loader = styled.img`
+  display: block;
+  max-width: 600px;
+  height: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%);
+`;

@@ -1,13 +1,20 @@
 import { Action } from 'redux';
-import { FETCH_IMAGES, FETCH_IMAGES_SUCCESS } from '../constants/constants';
+import { ImagesActionTypes } from './../constants/actionTypes';
+import { ImageInterface } from '../interfaces/image';
 
 export const fetchImages = () => ({
-  type: FETCH_IMAGES,
+  type: ImagesActionTypes.FETCH_IMAGES,
 });
 
+//(images: ImageInterface[])
 export const fetchImagesSuccess = (images: any) => ({
-  type: FETCH_IMAGES_SUCCESS,
+  type: ImagesActionTypes.FETCH_IMAGES_SUCCESS,
   payload: { images },
+});
+
+export const fetchImagesFailed = (error: string) => ({
+  type: ImagesActionTypes.FETCH_IMAGES_FAILED,
+  payload: { error },
 });
 
 export default fetchImages;

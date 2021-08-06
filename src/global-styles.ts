@@ -7,9 +7,44 @@ export const GlobalStyle = createGlobalStyle`
   box-sizing: border-box;
 } 
 
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  position: relative;
+}
+
 /* Variables */
 :root {
+  --btn: rgb(239, 239, 239);
+  --btn__hover: lightgray;
   --btn-save: #80bdff;
+  --btn-save__hover: #479cf9;
+  --btn-nav: gray;
+  --btn-nav__text: #fff;
+  --btn-nav__text-ini: black;
+  --btn-submit: #493;
+  --btn-submit__hover: rgb(65, 173, 44);
+}
+#canvas {
+  position: absolute;
+  top: 0;
+  right: 0;
+  border-left: 1px solid black;
 }
 `;
 
@@ -73,18 +108,6 @@ export const FormError = styled.p`
   &::before {
     display: inline;
     content: '⚠ ';
-  }
-`;
-
-export const FormSubmitBtn = styled.input`
-  ${Btn};
-  background-color: #493;
-  color: #fff;
-  padding: 0.7rem;
-  margin-top: 1.5rem;
-  font-size: 16px;
-  &:hover {
-    background-color: rgb(65, 173, 44);
   }
 `;
 
