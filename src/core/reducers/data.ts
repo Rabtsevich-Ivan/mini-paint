@@ -1,12 +1,8 @@
 import { ImagesActionTypes } from '../constants/actionTypes';
+import { DataState } from '../interfaces/states';
+import { Action } from '../interfaces/action';
 
-interface State {
-  images: object;
-  isLoading: boolean;
-  error: string;
-}
-
-const initialState: State = {
+const initialState: DataState = {
   images: [],
   isLoading: false,
   error: null,
@@ -14,9 +10,9 @@ const initialState: State = {
 
 const images = (
   state = initialState,
-  { type, payload }: { type: string; payload: any }
-): State => {
-  switch (type) {
+  action: Action<ImagesActionTypes>
+): DataState => {
+  switch (action.type) {
     case ImagesActionTypes.FETCH_IMAGES:
       return {
         ...state,
@@ -27,14 +23,13 @@ const images = (
         ...state,
         isLoading: false,
         error: null,
-        images: payload.images,
+        images: action.payload.images,
       };
-    // Should be tested!
     case ImagesActionTypes.FETCH_IMAGES_FAILED:
       return {
         ...state,
         isLoading: false,
-        error: payload.error,
+        error: action.payload.error,
       };
     default:
       return state;

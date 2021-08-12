@@ -1,12 +1,8 @@
 import React, { FC } from 'react';
-import { StyledComponent, StyledProps } from 'styled-components';
 import { Btn } from './styled';
+import { ButtonProps } from './types';
 
-interface ButtonProps {
-  [propName: string]: string | (()=>void);
-}
-
-export const Button:FC<ButtonProps> = ({ ...rest }) => {
+export const Button: FC<ButtonProps> = ({ ...rest }) => {
   return <Btn {...rest} />;
 };
 

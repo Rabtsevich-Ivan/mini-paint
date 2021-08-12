@@ -1,5 +1,4 @@
 import React, { FC, useState, useRef, useEffect, ChangeEvent } from 'react';
-import { Switch } from 'react-router';
 import Canvas from './components/Canvas/Canvas';
 import PaintControl from './components/PaintControl/PaintControl';
 import * as Styled from './styled';
@@ -7,31 +6,32 @@ import { saveData } from '../../core/services/save';
 import { auth } from '../../core/firebase/firebase';
 
 const PaintPage: FC = () => {
-  const [controlType, setControlType] = useState<String>('Brush');
-  const [brushColor, setBrushColor] = useState<String>('#000');
-  const [brushWidth, setBrushWidth] = useState<String>('30');
+  const [controlType, setControlType] = useState<string>('Brush');
+  const [brushColor, setBrushColor] = useState<string>('#000');
+  const [brushWidth, setBrushWidth] = useState<string>('30');
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [ctx, setCtx] = useState(undefined);
+  const [ctx, setCtx] = useState<CanvasRenderingContext2D>(undefined);
 
   /* Set context only when canvas is loaded */
+  /* and */
+  /* Rerender canvas with new width and height after resize */
   useEffect(() => {
     setCtx(canvasRef.current.getContext('2d'));
 
-    canvasRef.current.setAttribute(
-      'width',
-      String(window.innerWidth - 240)
-      //window.getComputedStyle(canvasRef.current.parentElement).width
-    );
-    canvasRef.current.setAttribute(
-      'height',
-      String(window.innerHeight)
-      //window.getComputedStyle(canvasRef.current.parentElement).height
-    );
+    const handleResize = () => {
+      canvasRef.current.height = window.innerHeight;
+      canvasRef.current.width = window.innerWidth - 240;
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+    // Rerender canvas with new width and height after resize
   }, []);
 
   //To inform canvas what tool it should use
-  const handleControl = (type: String): void => {
+  const handleControl = (type: string): void => {
     setControlType(type);
   };
 
@@ -46,7 +46,10 @@ const PaintPage: FC = () => {
   };
 
   //To clear canvas of any Drawings
-  const handleClear = (context: any, canvas: HTMLCanvasElement): void => {
+  const handleClear = (
+    context: CanvasRenderingContext2D,
+    canvas: HTMLCanvasElement
+  ): void => {
     context.clearRect(0, 0, canvas.width, canvas.height);
   };
 
@@ -85,7 +88,6 @@ const PaintPage: FC = () => {
           </Styled.PaintArea>
         </Styled.PaintWrapper>
       </main>
-      <div id='img-cont'></div>
     </div>
   );
 };

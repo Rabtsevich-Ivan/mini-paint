@@ -6,13 +6,17 @@ import { ReactReduxFirebaseProvider } from 'react-redux-firebase';
 import store from './core/reducers/store';
 import GlobalStyle from './global-styles';
 import { rrfProps } from './core/reducers/store';
+import { theme } from './global-styles';
+import { ThemeProvider } from 'styled-components';
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <ReactReduxFirebaseProvider {...rrfProps}>
-        <GlobalStyle />
-        <App />
+        <ThemeProvider theme={theme}>
+          <GlobalStyle />
+          <App />
+        </ThemeProvider>
       </ReactReduxFirebaseProvider>
     </Provider>
   </React.StrictMode>,

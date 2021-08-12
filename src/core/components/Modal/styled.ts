@@ -25,6 +25,12 @@ export const Modal = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
 `;
 
 export const ModalClose = styled.span`
@@ -36,12 +42,12 @@ export const ModalClose = styled.span`
 `;
 
 export const ModalField = styled.input`
-padding: 10px 15px;
+  padding: 10px 15px;
 
   outline: none;
   border: 1px solid rgb(204, 198, 198);
   &:focus {
-    border: 1px solid var(--btn-save);
+    border: 1px solid ${(props) => props.theme.colors['btn-save']};
   }
 `;
 
@@ -51,10 +57,10 @@ export const ModalSubmit = styled.button`
   outline: none;
   border: 0;
   border-radius: 3px;
-  background: var(--btn-save);
+  background: ${(props) => props.theme.colors['btn-save']};
   cursor: pointer;
   &:hover {
-    background: var(--btn-save__hover);
+    background: ${(props) => props.theme.colors['btn-save__hover']};
   }
 `;
 

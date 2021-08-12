@@ -1,9 +1,6 @@
-import { posix } from 'path';
 import React, { ForwardRefRenderFunction } from 'react';
 import { CanvasProps } from './types';
 
-//Typescript generic type practical usage
-//interface ForwardRefRenderFunction<T, P = {}> -- meaning  = interface ForwardRefRenderFunction<T, P = {canvas: HTMLCanvasElement, ctx: ...}>
 export const Canvas: ForwardRefRenderFunction<HTMLCanvasElement, CanvasProps> =
   ({ controlType, ctx, canvas, brushColor, brushWidth }, ref) => {
     //Vars
@@ -91,17 +88,23 @@ export const Canvas: ForwardRefRenderFunction<HTMLCanvasElement, CanvasProps> =
       const pos = getMousePos(canvas, e);
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      drawingStar(initialX, initialY, 5, initialX - pos.x, initialY - pos.y)
+      drawingStar(initialX, initialY, 5, initialX - pos.x, initialY - pos.y);
     };
 
     //utility
-    const drawingStar = (cx: number, cy: number, spikes: number, outerRadius: number, innerRadius: number): void => {
-      var rot = (Math.PI / 2) * 3;
-      var x = cx;
-      var y = cy;
-      var step = Math.PI / spikes;
+    const drawingStar = (
+      cx: number,
+      cy: number,
+      spikes: number,
+      outerRadius: number,
+      innerRadius: number
+    ): void => {
+      let rot = (Math.PI / 2) * 3;
+      let x = cx;
+      let y = cy;
+      const step = Math.PI / spikes;
 
-      ctx.strokeSyle = '#000';
+      ctx.strokeStyle = '#000';
       ctx.beginPath();
       ctx.moveTo(cx, cy - outerRadius);
       for (let i = 0; i < spikes; i++) {
@@ -118,21 +121,21 @@ export const Canvas: ForwardRefRenderFunction<HTMLCanvasElement, CanvasProps> =
       ctx.lineTo(cx, cy - outerRadius);
       ctx.closePath();
       ctx.lineWidth = 5;
-      
+
       ctx.stroke();
-      
+
       ctx.fill();
-    }
+    };
 
     //Complex function which handles drawing
     const handleDrawing = (e: React.MouseEvent<HTMLCanvasElement>): void => {
-      //If mouse is not in canvas or not pressed down
+      //If mouse is not within canvas or not pressed down
       if (!painting) return;
 
       //Set width and color for drawing
       ctx.strokeStyle = brushColor;
       ctx.fillStyle = brushColor;
-      ctx.lineWidth = brushWidth;
+      ctx.lineWidth = Number(brushWidth);
 
       switch (controlType) {
         case 'Eraser':

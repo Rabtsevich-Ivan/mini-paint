@@ -6,8 +6,8 @@ import { Header } from '../../../../core/components/Header/Header';
 import { useDispatch, useSelector } from 'react-redux';
 import { showModal } from '../../../../core/actions/modal';
 import Modal from '../../../../core/components/Modal/Modal';
+import { ModalState } from '../../../../core/interfaces/states';
 
-//export const PaintControl: FC<{canvas: HTMLCanvasElement;handleBrushWidth: (e: React.ChangeEvent<HTMLInputElement>) => void; ...}> = ({
 export const PaintControl: FC<ControlProps> = ({
   handleControl,
   context,
@@ -18,7 +18,9 @@ export const PaintControl: FC<ControlProps> = ({
   handleBrushWidth,
 }) => {
   const dispatch = useDispatch();
-  const modalStatus = useSelector((state: any) => state.modal.modal); 
+  const modalStatus = useSelector(
+    (state: { modal: ModalState }) => state.modal.modal
+  );
 
   return (
     <>
@@ -105,7 +107,7 @@ export const PaintControl: FC<ControlProps> = ({
               }}
               id='star'
             >
-              <i className="fas fa-star"></i>
+              <i className='fas fa-star'></i>
             </Styled.ToolBtn>
           </div>
         </Styled.ToolGrid>
@@ -133,7 +135,7 @@ export const PaintControl: FC<ControlProps> = ({
           Clear
         </Button>
       </Styled.ToolSection>
-      { modalStatus && <Modal canvas={canvas} handleSave={handleSave} /> }
+      {modalStatus && <Modal canvas={canvas} handleSave={handleSave} />}
     </>
   );
 };

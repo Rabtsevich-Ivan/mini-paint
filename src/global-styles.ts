@@ -29,17 +29,6 @@ code {
 }
 
 /* Variables */
-:root {
-  --btn: rgb(239, 239, 239);
-  --btn__hover: lightgray;
-  --btn-save: #80bdff;
-  --btn-save__hover: #479cf9;
-  --btn-nav: gray;
-  --btn-nav__text: #fff;
-  --btn-nav__text-ini: black;
-  --btn-submit: #493;
-  --btn-submit__hover: rgb(65, 173, 44);
-}
 #canvas {
   position: absolute;
   top: 0;
@@ -48,20 +37,27 @@ code {
 }
 `;
 
-//Utility
-export const Btn = css`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  bottom: 0;
-  outline: 0;
-  border: 0;
-  width: 100%;
-  border-radius: 0;
-  text-decoration: none;
-  padding: 0.5rem;
-`;
+//Theme
+export const theme = {
+  colors: {
+    //Main
+    btn: 'rgb(239, 239, 239)',
+    btn__hover: '#ff9999',
+    'btn-save': '#80bdff',
+    'btn-save__hover': '#479cf9',
+    //Navigation
+    'btn__text-inittial': 'black',
+    'btn-nav_hover': 'gray',
+    'btn-nav_focused': 'gray',
+    //Text Color after hover
+    'btn-nav__text': '#fff',
+    //Form Buttons
+    'btn-submit': '#493',
+    'btn-submit__text': '#fff',
+    'btn-submit__hover': 'rgb(65, 173, 44)',
+    //Tools
+  },
+};
 
 //Forms
 export const BasicMainForm = css`
