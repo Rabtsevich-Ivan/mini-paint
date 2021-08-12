@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
-import LoginForm from './components/LoginForm/LoginForm';
 import { Link } from 'react-router-dom';
+import LoginForm from './components/LoginForm/LoginForm';
 import * as Styled from './styled';
 
 const LoginPage: FC = () => {

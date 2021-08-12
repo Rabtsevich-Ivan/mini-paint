@@ -1,7 +1,7 @@
 export interface CanvasProps {
-    controlType: String;
-    ctx: any;
-    canvas: HTMLCanvasElement;
-    brushColor: String;
-    brushWidth: String;
+  controlType: string;
+  ctx: CanvasRenderingContext2D;
+  canvas: HTMLCanvasElement;
+  brushColor: string;
+  brushWidth: string;
 }

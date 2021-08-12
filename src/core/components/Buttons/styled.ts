@@ -1,11 +1,13 @@
 import styled from 'styled-components';
+import { ButtonProps } from './types';
 
-export const Btn = styled.button`
+export const Btn = styled.button<ButtonProps>`
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  background: var(--btn);
+  background: ${(props) => props.theme.colors.btn};
+  color: ${(props) => props.theme.colors['btn__text-inittial']};
   bottom: 0;
   outline: 0;
   border: 0;
@@ -16,26 +18,26 @@ export const Btn = styled.button`
   border-radius: 2px;
   transition: all 0.2s ease-out;
   &:hover {
-    background: var(--btn__hover);
+    background: ${(props) => props.theme.colors.btn__hover};
   }
 
-  ${(props: any) => {
+  ${(props) => {
     if (props.btnType === 'formBtn') {
-      return `background-color: #493;
-        color: #fff;
+      return `background-color: ${props.theme.colors['btn-submit']};
+        color: ${props.theme.colors['btn-submit__text']};
         padding: 0.7rem;
         margin-top: 1.5rem;
         font-size: 16px;
         &:hover {
-          background-color: var(--btn-submit__hover);
+          background-color: ${props.theme.colors['btn-submit__hover']};
         }`;
     } else if (props.btnType === 'canvasSave') {
-        return `
-        background-color: var(--btn-save);
+      return `
+        background-color: ${props.theme.colors['btn-save']};
+        
         &:hover {
-          background: var(--btn-save__hover);
-        }
-        `
+          background: ${props.theme.colors['btn-save__hover']};
+        }`;
     }
   }}
 `;

@@ -1,6 +1,6 @@
 import React, { FC, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
 import { useDispatch } from 'react-redux';
 import { auth } from '../../../../../core/firebase/firebase';
@@ -14,31 +14,30 @@ import {
 import { Inputs } from '../../../../../core/interfaces/inputs';
 import { signup } from '../../../../../core/actions/auth';
 import Button from '../../../../../core/components/Buttons/Button';
+import { User } from '../../../../../core/interfaces/user';
 
 export const SignUpForm: FC = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
+  // UseForm library
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Inputs>();
+  // Submit Handler
+  const onSubmit = (data: User): void => {
+    dispatch(signup(data.email, data.password));
+  };
+
   useEffect(() => {
-    // auth.onAuthStateChanged return method, which will
-    // delete this listener when we unmount this component
     auth.onAuthStateChanged((user) => {
       if (user) {
         history.push('/');
       }
     });
   }, []);
-
-  // Submit Handler
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<Inputs>();
-  function onSubmit(data: any) {
-    dispatch(signup(data.email, data.password));
-    //history.push('/');
-  }
 
   return (
     <form action='' onSubmit={handleSubmit(onSubmit)}>

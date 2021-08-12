@@ -1,14 +1,14 @@
-import React from "react";
+import React from 'react';
 
 export interface ControlProps {
   handleControl: (type: string) => void;
-  context: any;
+  context: CanvasRenderingContext2D;
   canvas: HTMLCanvasElement;
-  handleClear: (context: any, canvas: HTMLCanvasElement) => void;
+  handleClear: (
+    context: CanvasRenderingContext2D,
+    canvas: HTMLCanvasElement
+  ) => void;
   handleSave: (canvas: HTMLCanvasElement, imageName: string) => void;
-  // Two ways to define function types
-  //random guy method
-  handleBrushColor(e: React.ChangeEvent<HTMLInputElement>): void;
-  //webDev channel method
+  handleBrushColor: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleBrushWidth: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }

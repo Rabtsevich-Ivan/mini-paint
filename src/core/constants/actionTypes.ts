@@ -12,7 +12,6 @@ export enum AuthActionTypes {
   SIGN_UP_SUCCESS = '[Auth] SIGN_UP_SUCCESS',
   SIGN_UP_FAILED = '[Auth] SIGN_UP_FAILED',
   LOGOUT = '[Auth] LOGOUT',
-  ISLOGGEDIN = '[Auth] ISLOGGEDIN',
 }
 
 export enum ModalActionTypes {

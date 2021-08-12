@@ -1,14 +1,10 @@
-import { ModalActionTypes } from "../constants/actionTypes";
+import { ModalActionTypes } from '../constants/actionTypes';
+import { Action } from '../interfaces/action';
 
-export interface ModalAction {
-    type: ModalActionTypes;
-    payload?: any;
-}
+export const showModal = (): Action<ModalActionTypes> => {
+  return { type: ModalActionTypes.SHOWMODAL };
+};
 
-export const showModal = () => ({
-    type: ModalActionTypes.SHOWMODAL,
-});
-
-export const closeModal = () => ({
-    type: ModalActionTypes.CLOSEMODAL,
+export const closeModal = (): Action<ModalActionTypes> => ({
+  type: ModalActionTypes.CLOSEMODAL,
 });

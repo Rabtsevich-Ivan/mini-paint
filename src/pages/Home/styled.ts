@@ -10,6 +10,7 @@ export const GridWrap = styled.div`
 export const ImageWrap = styled.div`
   height: 300px;
   width: 300px;
+  overflow: hidden;
   display: flex;
   align-items: center;
 `;

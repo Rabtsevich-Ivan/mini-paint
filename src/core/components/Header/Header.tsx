@@ -4,23 +4,33 @@ import { logout } from '../../actions/auth';
 import * as Styled from './styled';
 import { HeaderProps } from './types';
 import { useDispatch, useSelector } from 'react-redux';
+import { isEmpty } from 'react-redux-firebase';
+import {
+  selectFirebaseAuth,
+  selectFirebaseAuthEmail,
+} from '../../selectors/auth';
 
 export const Header: FC<HeaderProps> = ({ condition }) => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const email = useSelector((state:any) => state.firebase.auth.email)
+
+  const email = useSelector(selectFirebaseAuthEmail);
+  const auth = useSelector(selectFirebaseAuth);
 
   const handleLogout = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     dispatch(logout());
-    history.push('/login');
   };
+
+  if (isEmpty(auth)) {
+    history.push('/login');
+  }
 
   return (
     <header>
-      <Styled.Container condition={condition} >
+      <Styled.Container condition={condition}>
         <nav className='nav-bar'>
-          { condition ? <h1>Navigation</h1> : '' }
+          {condition ? <h1>Navigation</h1> : ''}
           <Styled.NavList>
             {condition ? (
               <Styled.NavListItem>

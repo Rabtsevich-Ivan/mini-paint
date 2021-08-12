@@ -24,6 +24,7 @@ export { projectStorage, projectFirestore, timestamp };
 
 export default app;
 
+//Rules for database, which I deleted for convenience sake
 /*
 rules_version = '2';
 service firebase.storage {

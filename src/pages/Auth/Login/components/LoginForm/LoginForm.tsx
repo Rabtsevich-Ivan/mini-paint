@@ -1,8 +1,8 @@
 import React, { FC, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../../../../core/actions/auth';
 import {
   FormTitle,
@@ -12,35 +12,35 @@ import {
   FormControl,
 } from './../../../../../global-styles';
 import { Inputs } from '../../../../../core/interfaces/inputs';
-import { auth } from '../../../../../core/firebase/firebase';
 import Button from '../../../../../core/components/Buttons/Button';
-import { useSelector } from 'react-redux';
-import { isEmpty } from 'react-redux-firebase';
+import { User } from '../../../../../core/interfaces/user';
+import { selectAuthError } from '../../../../../core/selectors/auth';
+import { auth } from '../../../../../core/firebase/firebase';
 
 export const LoginForm: FC = () => {
-  const dispatch = useDispatch();
   const history = useHistory();
-  const errorStatus = useSelector((state: any) => state.auth.error);
-  //const logStatus = useSelector((state: any) => state.auth.logStatus);
-  const auth = useSelector((state: any) => state.firebase.auth)
+  const dispatch = useDispatch();
 
-  // Submit Handler
+  const errorStatus = useSelector(selectAuthError);
+
+  // Useform library
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>();
-  const onSubmit = (data: any) => {
+  // Submit Handler
+  const onSubmit = (data: User): void => {
     dispatch(login(data.email, data.password));
   };
 
-  if (!isEmpty(auth)) {
-    history.push('/');
-  }
-
-  // if (auth.currentUser) {
-     
-  // }
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        history.push('/');
+      }
+    });
+  }, []);
 
   return (
     <form action='' onSubmit={handleSubmit(onSubmit)}>

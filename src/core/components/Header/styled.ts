@@ -45,15 +45,15 @@ export const NavListItem = styled.li`
     display: block;
     padding: 15px 20px;
     transition: all 0.2s ease-out;
-    color: var(--btn-nav__text-ini);
+    color: ${(props) => props.theme.colors['btn__text-inittial']};
   }
   a:hover {
-    background-color: var(--btn-nav);
-    color: var(--btn-nav__text);
+    background-color: ${(props) => props.theme.colors['btn-nav_hover']};
+    color: ${(props) => props.theme.colors['btn-nav__text']};
     cursor: pointer;
   }
   .focused {
-    background-color: var(--btn-nav);
-    color: var(--btn-nav__text);
+    background-color: ${(props) => props.theme.colors['btn-nav_focused']};
+    color: ${(props) => props.theme.colors['btn-nav__text']};
   }
 `;

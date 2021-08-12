@@ -1,6 +1,5 @@
-import { put, takeEvery, call } from '@redux-saga/core/effects';
+import { put, takeEvery, call, SagaReturnType } from '@redux-saga/core/effects';
 import { AuthActionTypes } from '../constants/actionTypes';
-import { Action as ReduxAction } from 'redux';
 import {
   loginSuccess,
   loginFailed,
@@ -9,15 +8,15 @@ import {
   logout,
 } from '../actions/auth';
 import { login, signup, logout as authLogout } from '../services/auth';
+import firebase from 'firebase';
+import { Action } from '../interfaces/action';
 
-interface Action<T> extends ReduxAction<T> {
-  payload?: any;
-}
-
-export function* loginWorker(action: Action<AuthActionTypes>): Generator {
+function* loginWorker(action: Action<AuthActionTypes>) {
   try {
-    alert('start');
-    const data = yield call(
+    //SagaReturnType<typeof login> Can't be used here
+    //because it returns Promise<UserCredential>, but I need the result of the call
+    //which is firebase.User
+    const data: firebase.User = yield call(
       login,
       action.payload.email,
       action.payload.password
@@ -28,22 +27,20 @@ export function* loginWorker(action: Action<AuthActionTypes>): Generator {
   }
 }
 
-export function* signupWorker(action: Action<AuthActionTypes>): Generator {
+function* signupWorker(action: Action<AuthActionTypes>) {
   try {
-    alert('start');
-    const data = yield call(
+    const data: SagaReturnType<typeof signup> = yield call(
       signup,
       action.payload.email,
       action.payload.password
     );
-    alert(data);
     yield put(signupSuccess(data));
   } catch (e) {
     yield put(signupFailed(e.message));
   }
 }
 
-function* logoutWorker(): Generator {
+function* logoutWorker() {
   yield call(authLogout);
   return put(logout());
 }

@@ -1,16 +1,15 @@
 import { auth } from '../firebase/firebase';
 import { fetchImagesFailed, fetchImagesSuccess } from './../actions/data';
 import { getData } from '../services/data';
-import { put, call, takeEvery } from '@redux-saga/core/effects';
+import { put, call, takeEvery, SagaReturnType } from 'redux-saga/effects';
 import { ImagesActionTypes } from '../constants/actionTypes';
-import { ImageInterface } from '../interfaces/image';
-import { Observable } from 'redux';
 
-export function* fetchImagesWorker(): Generator {
+function* fetchImagesWorker() {
   try {
-    //const data: ImageInterface[] = yield call(getData, auth.currentUser);
-    const data = yield call(getData, auth.currentUser);
-    console.log(data)
+    const data: SagaReturnType<typeof getData> = yield call(
+      getData,
+      auth.currentUser
+    );
     yield put(fetchImagesSuccess(data));
   } catch (e) {
     yield put(fetchImagesFailed(e.message));
@@ -18,6 +17,5 @@ export function* fetchImagesWorker(): Generator {
 }
 
 export function* imagesWatcher(): Generator {
-  //keep track of dispatch(action) and runs worker
   yield takeEvery(ImagesActionTypes.FETCH_IMAGES, fetchImagesWorker);
 }

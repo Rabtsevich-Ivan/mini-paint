@@ -1,14 +1,16 @@
 import { projectFirestore } from '../firebase/firebase';
-import { ImageInterface } from './../interfaces/image';
+import { Image } from './../interfaces/image';
+import firebase from 'firebase';
 
-
-export const getData = (user: any): Promise<ImageInterface[]> => {
+export const getData = (user: firebase.User): Promise<Image[]> => {
   return projectFirestore
     .collection('images')
     .orderBy('createdAt', 'desc')
     .where('user', '==', user.email)
     .get()
     .then((querySnapshot) =>
-      querySnapshot.docs.map((doc: any) => ({ ...doc.data(), id: doc.id }))
+      querySnapshot.docs.map((doc) => {
+        return { ...doc.data(), id: doc.id } as Image;
+      })
     );
 };

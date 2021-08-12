@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { Btn } from '../../../../global-styles';
 
 export const ToolSection = styled.div`
   padding-bottom: 1rem;
@@ -29,9 +28,3 @@ export const ToolBtn = styled.button`
   height: 100%;
   cursor: pointer;
 `;
-
-export const CanvasSaveBtn = styled.button`
-  ${Btn};
-  background-color: var(--btn-save);
-`;
-

@@ -1,15 +1,15 @@
 import { ModalActionTypes } from '../constants/actionTypes';
-import { ModalAction } from '../actions/modal';
+import { ModalState } from '../interfaces/states';
+import { Action } from '../interfaces/action';
 
-interface State {
-  modal: boolean;
-}
-
-const initialState: State = {
+const initialState: ModalState = {
   modal: false,
 };
 
-const modal = (state = initialState, action: ModalAction) => {
+const modal = (
+  state = initialState,
+  action: Action<ModalActionTypes>
+): ModalState => {
   switch (action.type) {
     case ModalActionTypes.SHOWMODAL:
       return {

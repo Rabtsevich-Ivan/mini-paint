@@ -1,6 +1,6 @@
-export interface ImageInterface {
+export interface Image {
   url: string;
-  createdAt: any;
+  createdAt: string;
   user: string;
-  id?: string;
+  id: string;
 }

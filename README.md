@@ -10,20 +10,16 @@ Work in progress.
 
 **Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-
 ## How to run the app
 
-Work in progress.
 
 ## Database snapshot
 A single collection called images stores documents, where each has 3 fields:
    createdAt: equals to server timestamp at the moment of saving the image to Storage and Firestore,
    url: link to the image, saved in Storage,
-   user: email(which is also login) of the current user
+   user: email(which is also login) of the user
 
 ## Application stack
-(Stack will be updated when technology get implemented)
+(Stack will be updated when technology gets implemented)
 
-React, React Hook Form, React Router, Typescript, Firebase(Storage, Firestore, Auth)
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+React, Redux, Redux-saga, Typescript, Firebase(Storage, Firestore, Auth), React Hook Form, React Router, React-redux-firebase, reselect, styled-components

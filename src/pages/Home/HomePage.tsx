@@ -1,23 +1,24 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect } from 'react';
 import { Header } from '../../core/components/Header/Header';
 import * as Styled from './styled';
 import { useDispatch, useSelector } from 'react-redux';
 import fetchImages from '../../core/actions/data';
-import { getData } from '../../core/services/data';
-import { auth } from '../../core/firebase/firebase';
+import { Image } from '../../core/interfaces/image';
+import {
+  selectImagesArray,
+  selectImagesIsLoading,
+} from '../../core/selectors/images';
 
 const HomePage: FC = () => {
-  //Create Array of objects which gets ID and imageURL from database
-  const images: any = useSelector((state: any) => state.images.images);
-  const isLoading: any = useSelector((state: any) => state.images.isLoading);
+  const images: Image[] = useSelector(selectImagesArray);
+  const isLoading = useSelector(selectImagesIsLoading);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchImages());
-    console.log();
   }, []);
 
-  //Condition for Header to render link to paint or home page
+  //Condition for Header component to render nav-link referring on PaintPage or HomePage
   return (
     <div>
       <Header condition={false} />
@@ -31,9 +32,13 @@ const HomePage: FC = () => {
               />
             ) : (
               Array.isArray(images) &&
-              images.map((doc: any, index: number) => (
+              images.map((doc: Image, index: number) => (
                 <Styled.ImageWrap key={'image_' + index}>
-                  <Styled.Img src={doc.url} alt='pic from firebase' />
+                  <Styled.Img
+                    src={doc.url}
+                    alt={'image_' + index}
+                    id={'image_' + index}
+                  />
                 </Styled.ImageWrap>
               ))
             )}

@@ -1,24 +1,18 @@
 import { AuthActionTypes } from '../constants/actionTypes';
+import { Action } from '../interfaces/action';
+import { AuthState } from '../interfaces/states';
 
-interface State {
-  data: object;
-  isLoading: boolean;
-  error: string;
-  logStatus: any;
-}
-
-const initialState: State = {
+const initialState: AuthState = {
   data: null,
   isLoading: false,
   error: null,
-  logStatus: null,
 };
 
 const auth = (
   state = initialState,
-  { type, payload }: { type: string; payload: any }
-): State => {
-  switch (type) {
+  action: Action<AuthActionTypes>
+): AuthState => {
+  switch (action.type) {
     case AuthActionTypes.LOGIN:
       return {
         ...state,
@@ -27,16 +21,16 @@ const auth = (
     case AuthActionTypes.LOGIN_SUCCESS:
       return {
         ...state,
-        data: payload.data,
+        data: action.payload.data,
         isLoading: false,
         error: null,
       };
+
     case AuthActionTypes.LOGIN_FAILED:
       return {
         ...state,
         isLoading: false,
-        error: payload.error,
-        data: payload.data,
+        error: action.payload.error,
       };
     case AuthActionTypes.SIGN_UP:
       return {
@@ -46,7 +40,7 @@ const auth = (
     case AuthActionTypes.SIGN_UP_SUCCESS:
       return {
         ...state,
-        data: payload.data,
+        data: action.payload.data,
         isLoading: false,
         error: null,
       };
@@ -54,12 +48,7 @@ const auth = (
       return {
         ...state,
         isLoading: false,
-        error: payload.error,
-      };
-    case AuthActionTypes.ISLOGGEDIN:
-      return {
-        ...state,
-        logStatus: payload.user,
+        error: action.payload.error,
       };
     case AuthActionTypes.LOGOUT:
       return initialState;
