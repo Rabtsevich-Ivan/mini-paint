@@ -25,10 +25,8 @@ export const Modal: FC = () => {
     <Styled.ModalOverlay>
       <Styled.Modal>
         <h3>{modal.title}</h3>
-        {modal.type === ModalTypes.MODAL_FORM ? <ModalForm /> : null}
-        {modal.type === ModalTypes.MODAL_INFO ? (
-          <p>{modal.description}</p>
-        ) : null}
+        {modal.type === ModalTypes.MODAL_FORM && <ModalForm />}
+        {modal.type === ModalTypes.MODAL_INFO && <p>{modal.description}</p>}
 
         <Styled.ModalClose onClick={handleCloseModal}>
           &#10005;
