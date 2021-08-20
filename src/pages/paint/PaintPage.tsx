@@ -2,10 +2,13 @@ import React, { FC, useState, useRef, useEffect, ChangeEvent } from 'react';
 import Canvas from './components/Canvas/Canvas';
 import PaintControl from './components/PaintControl/PaintControl';
 import * as Styled from './styled';
-import { saveData } from '../../core/services/save';
 import { auth } from '../../core/firebase/firebase';
+import { useDispatch } from 'react-redux';
+import { saveImage } from '../../core/actions/data';
 
 const PaintPage: FC = () => {
+  const dispatch = useDispatch();
+
   const [controlType, setControlType] = useState<string>('Brush');
   const [brushColor, setBrushColor] = useState<string>('#000');
   const [brushWidth, setBrushWidth] = useState<string>('30');
@@ -57,13 +60,13 @@ const PaintPage: FC = () => {
   const currentUser = auth.currentUser;
   const handleSave = (canvas: HTMLCanvasElement, imageName: string): void => {
     canvas.toBlob((blob: Blob): void => {
-      saveData(imageName, blob, currentUser);
+      dispatch(saveImage(imageName, blob, currentUser));
     });
   };
 
   return (
     <div>
-      <main className='paint-section'>
+      <main>
         <Styled.PaintWrapper>
           <Styled.PaintControl>
             <PaintControl

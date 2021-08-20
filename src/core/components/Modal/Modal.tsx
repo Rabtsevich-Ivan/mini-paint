@@ -1,54 +1,36 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import * as Styled from './styled';
 import { useDispatch } from 'react-redux';
 import { closeModal } from '../../actions/modal';
-import { ModalProps } from './types';
+import { ModalState } from '../../reducers/modal';
+import { useSelector } from 'react-redux';
+import { ModalForm } from './components/ModalForm';
+import { ModalTypes } from '../../constants/modal';
 
-export const Modal: FC<ModalProps> = ({ handleSave, canvas }) => {
+export const Modal: FC = () => {
   const dispatch = useDispatch();
+  const modal = useSelector(
+    (state: { modal: ModalState }) => state.modal.modal
+  );
 
-  const [imageName, setImageName] = useState('');
-  const [successMessage, setSuccessMessage] = useState(false);
+  if (!modal) {
+    return null;
+  }
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
-    e.preventDefault();
-
-    handleSave(canvas, imageName);
-    setSuccessMessage(true);
-    setTimeout(() => {
-      dispatch(closeModal());
-    }, 1500);
-  };
-
-  const createImageName = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setImageName(e.target.value);
+  const handleCloseModal = () => {
+    dispatch(closeModal());
   };
 
   return (
     <Styled.ModalOverlay>
       <Styled.Modal>
-        <h3>Please name your creation!</h3>
-        <form action='#' onSubmit={handleSubmit}>
-          <Styled.ModalField
-            onChange={createImageName}
-            type='text'
-            placeholder='random drawing 777'
-            required
-          />
-          <Styled.ModalSubmit type='submit'>Save</Styled.ModalSubmit>
-        </form>
+        <h3>{modal.title}</h3>
+        {modal.type === ModalTypes.MODAL_FORM ? <ModalForm /> : null}
+        {modal.type === ModalTypes.MODAL_INFO ? (
+          <p>{modal.description}</p>
+        ) : null}
 
-        {successMessage && (
-          <Styled.ModalSuccessMessage>
-            Your image was successfully created!!
-          </Styled.ModalSuccessMessage>
-        )}
-
-        <Styled.ModalClose
-          onClick={() => {
-            dispatch(closeModal());
-          }}
-        >
+        <Styled.ModalClose onClick={handleCloseModal}>
           &#10005;
         </Styled.ModalClose>
       </Styled.Modal>

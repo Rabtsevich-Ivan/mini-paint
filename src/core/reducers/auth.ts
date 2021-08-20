@@ -1,6 +1,14 @@
-import { AuthActionTypes } from '../constants/actionTypes';
+import { AuthActionTypes } from './../actions/auth';
 import { Action } from '../interfaces/action';
-import { AuthState } from '../interfaces/states';
+import { User } from './../interfaces/user';
+import firebase from 'firebase';
+import { UserCredential } from '@firebase/auth-types';
+
+export interface AuthState {
+  data: User | firebase.User | UserCredential;
+  isLoading: boolean;
+  error: null | string;
+}
 
 const initialState: AuthState = {
   data: null,

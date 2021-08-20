@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
-import { DataState } from '../interfaces/states';
-import { AuthState } from '../interfaces/states';
-import { ModalState } from '../interfaces/states';
+import { DataState } from './data';
+import { AuthState } from './auth';
+import { ModalState } from './modal';
 import auth from './auth';
 import images from './data';
 import modal from './modal';

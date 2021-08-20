@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { BasicFormWrapper, BasicMainForm } from '../../../global-styles';
+import { BasicFormWrapper, BasicMainForm } from './../styled';
 
 export const MainForm = styled.main`
   ${BasicMainForm};

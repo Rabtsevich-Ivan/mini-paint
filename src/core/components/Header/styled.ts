@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 import { HeaderProps } from './types';
+import { Link } from 'react-router-dom';
 
 export const Container = styled.div<HeaderProps>`
-  ${(p) => {
-    if (p.condition === true) {
+  ${(props) => {
+    if (props.condition === true) {
       return `
         margin: 0;
         padding: 0;
@@ -39,21 +40,30 @@ export const NavList = styled.ul`
   padding-top: 2px;
 `;
 
-export const NavListItem = styled.li`
-  a {
-    text-decoration: none;
-    display: block;
-    padding: 15px 20px;
-    transition: all 0.2s ease-out;
-    color: ${(props) => props.theme.colors['btn__text-inittial']};
-  }
-  a:hover {
+export const NavListItem = styled.li``;
+
+export const NavRouterLink = styled(Link)`
+  text-decoration: none;
+  display: block;
+  padding: 15px 20px;
+  transition: all 0.2s ease-out;
+  color: ${(props) => props.theme.colors['btn__text-inittial']};
+  &:hover {
     background-color: ${(props) => props.theme.colors['btn-nav_hover']};
     color: ${(props) => props.theme.colors['btn-nav__text']};
     cursor: pointer;
   }
-  .focused {
-    background-color: ${(props) => props.theme.colors['btn-nav_focused']};
+`;
+
+export const NavLink = styled.a`
+  text-decoration: none;
+  display: block;
+  padding: 15px 20px;
+  transition: all 0.2s ease-out;
+  color: ${(props) => props.theme.colors['btn__text-inittial']};
+  &:hover {
+    background-color: ${(props) => props.theme.colors['btn-nav_hover']};
     color: ${(props) => props.theme.colors['btn-nav__text']};
+    cursor: pointer;
   }
 `;

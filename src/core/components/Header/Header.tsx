@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { logout } from '../../actions/auth';
 import * as Styled from './styled';
 import { HeaderProps } from './types';
@@ -9,6 +9,9 @@ import {
   selectFirebaseAuth,
   selectFirebaseAuthEmail,
 } from '../../selectors/auth';
+import { AppRoutes } from '../../constants/appRoutes';
+import { showModal } from '../../actions/modal';
+import { ModalTypes } from '../../constants/modal';
 
 export const Header: FC<HeaderProps> = ({ condition }) => {
   const history = useHistory();
@@ -26,27 +29,41 @@ export const Header: FC<HeaderProps> = ({ condition }) => {
     history.push('/login');
   }
 
+  const handleShowModal = (): void => {
+    dispatch(
+      showModal({
+        title: 'User Information',
+        type: ModalTypes.MODAL_INFO,
+        description: `Current user is ${email}`,
+      })
+    );
+  };
+
   return (
     <header>
       <Styled.Container condition={condition}>
-        <nav className='nav-bar'>
+        <nav>
           {condition ? <h1>Navigation</h1> : ''}
           <Styled.NavList>
             {condition ? (
               <Styled.NavListItem>
-                <Link to='/'>Images</Link>
+                <Styled.NavRouterLink to={AppRoutes.Home}>
+                  Images
+                </Styled.NavRouterLink>
               </Styled.NavListItem>
             ) : (
               <Styled.NavListItem>
-                <Link to='/paint'>Paint</Link>
+                <Styled.NavRouterLink to={AppRoutes.Paint}>
+                  Paint
+                </Styled.NavRouterLink>
               </Styled.NavListItem>
             )}
 
             <Styled.NavListItem>
-              <a onClick={handleLogout}>Sign Out</a>
+              <Styled.NavLink onClick={handleShowModal}>Info</Styled.NavLink>
             </Styled.NavListItem>
             <Styled.NavListItem>
-              <a className='focused'>{email}</a>
+              <Styled.NavLink onClick={handleLogout}>Sign Out</Styled.NavLink>
             </Styled.NavListItem>
           </Styled.NavList>
         </nav>

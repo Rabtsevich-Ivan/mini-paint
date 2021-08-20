@@ -1,5 +1,10 @@
-import { put, takeEvery, call, SagaReturnType } from '@redux-saga/core/effects';
-import { AuthActionTypes } from '../constants/actionTypes';
+import {
+  put,
+  call,
+  SagaReturnType,
+  takeLatest,
+} from '@redux-saga/core/effects';
+import { AuthActionTypes } from './../actions/auth';
 import {
   loginSuccess,
   loginFailed,
@@ -46,7 +51,7 @@ function* logoutWorker() {
 }
 
 export function* authWatcher(): Generator {
-  yield takeEvery(AuthActionTypes.LOGIN, loginWorker);
-  yield takeEvery(AuthActionTypes.SIGN_UP, signupWorker);
-  yield takeEvery(AuthActionTypes.LOGOUT, logoutWorker);
+  yield takeLatest(AuthActionTypes.LOGIN, loginWorker);
+  yield takeLatest(AuthActionTypes.SIGN_UP, signupWorker);
+  yield takeLatest(AuthActionTypes.LOGOUT, logoutWorker);
 }

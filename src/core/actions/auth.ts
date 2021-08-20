@@ -1,7 +1,16 @@
-import { AuthActionTypes } from '../constants/actionTypes';
 import { Action } from '../interfaces/action';
 import firebase from 'firebase';
 import { UserCredential } from '@firebase/auth-types';
+
+export enum AuthActionTypes {
+  LOGIN = '[Auth] LOGIN',
+  LOGIN_SUCCESS = '[Auth] LOGIN_SUCCESS',
+  LOGIN_FAILED = '[Auth] LOGIN_FAILED',
+  SIGN_UP = '[Auth] SIGN_UP',
+  SIGN_UP_SUCCESS = '[Auth] SIGN_UP_SUCCESS',
+  SIGN_UP_FAILED = '[Auth] SIGN_UP_FAILED',
+  LOGOUT = '[Auth] LOGOUT',
+}
 
 export const login = (
   email: string,

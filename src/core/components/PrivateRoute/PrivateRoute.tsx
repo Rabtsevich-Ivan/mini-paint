@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { isLoaded, isEmpty } from 'react-redux-firebase';
 import { Props } from './types';
 import { selectFirebaseAuth } from '../../selectors/auth';
+import { AppRoutes } from '../../constants/appRoutes';
 
 const PrivateRoute: FC<Props> = ({ component: Component, ...rest }) => {
   const auth = useSelector(selectFirebaseAuth);
@@ -15,7 +16,7 @@ const PrivateRoute: FC<Props> = ({ component: Component, ...rest }) => {
         return isLoaded(auth) && !isEmpty(auth) ? (
           <Component {...props} />
         ) : (
-          <Redirect to='/login' />
+          <Redirect to={AppRoutes.Login} />
         );
       }}
     ></Route>
