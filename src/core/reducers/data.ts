@@ -1,6 +1,12 @@
-import { ImagesActionTypes } from '../constants/actionTypes';
-import { DataState } from '../interfaces/states';
+import { ImagesActionTypes } from './../actions/data';
 import { Action } from '../interfaces/action';
+import { Image } from './../interfaces/image';
+
+export interface DataState {
+  images: Image[];
+  isLoading: boolean;
+  error: string;
+}
 
 const initialState: DataState = {
   images: [],

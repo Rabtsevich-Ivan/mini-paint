@@ -1,5 +1,13 @@
 import React, { ForwardRefRenderFunction } from 'react';
 import { CanvasProps } from './types';
+import { PaintTools } from '../../../../core/constants/paintTools';
+import {
+  draw,
+  drawLine,
+  drawCircle,
+  drawRectangle,
+  drawStar,
+} from './utilityDraw';
 
 export const Canvas: ForwardRefRenderFunction<HTMLCanvasElement, CanvasProps> =
   ({ controlType, ctx, canvas, brushColor, brushWidth }, ref) => {
@@ -10,24 +18,26 @@ export const Canvas: ForwardRefRenderFunction<HTMLCanvasElement, CanvasProps> =
     //Get mouse Position
     const getMousePos = (
       canvas: HTMLCanvasElement,
-      e: React.MouseEvent<HTMLCanvasElement>
+      event: React.MouseEvent<HTMLCanvasElement>
     ): { x: number; y: number } => {
       const rect = canvas.getBoundingClientRect();
       return {
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top,
+        x: event.clientX - rect.left,
+        y: event.clientY - rect.top,
       };
     };
 
     //Check if mouse within canvas
-    const startPosition = (e: React.MouseEvent<HTMLCanvasElement>): void => {
+    const startPosition = (
+      event: React.MouseEvent<HTMLCanvasElement>
+    ): void => {
       painting = true;
 
-      const pos = getMousePos(canvas, e);
+      const pos = getMousePos(canvas, event);
       initialX = pos.x;
       initialY = pos.y;
 
-      draw(e);
+      draw(canvas, event, ctx, getMousePos);
     };
 
     //Finish Drawing
@@ -40,95 +50,10 @@ export const Canvas: ForwardRefRenderFunction<HTMLCanvasElement, CanvasProps> =
       ctx.beginPath();
     };
 
-    //Drawing with brush
-    const draw = (e: React.MouseEvent<HTMLCanvasElement>): void => {
-      const pos = getMousePos(canvas, e);
-
-      ctx.lineCap = 'round';
-      ctx.lineTo(pos.x, pos.y);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.moveTo(pos.x, pos.y);
-    };
-
-    //Drawing Line
-    const drawLine = (e: React.MouseEvent<HTMLCanvasElement>): void => {
-      const pos = getMousePos(canvas, e);
-
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.beginPath();
-      ctx.moveTo(initialX, initialY);
-      ctx.lineTo(pos.x, pos.y);
-      ctx.stroke();
-    };
-
-    //Drawing Reactangle
-    const drawRectangle = (e: React.MouseEvent<HTMLCanvasElement>): void => {
-      const pos = getMousePos(canvas, e);
-
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillRect(initialX, initialY, pos.x - initialX, pos.y - initialY);
-    };
-
-    //Drawing Circle
-    const drawCircle = (e: React.MouseEvent<HTMLCanvasElement>): void => {
-      const pos = getMousePos(canvas, e);
-      const radius = Math.sqrt(
-        Math.pow(initialX - pos.x, 2) + Math.pow(initialY - pos.y, 2)
-      );
-
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.beginPath();
-      ctx.arc(initialX, initialY, radius, 2 * Math.PI, 0);
-      ctx.stroke();
-    };
-
-    //Drawing Star
-    const drawStar = (e: React.MouseEvent<HTMLCanvasElement>): void => {
-      const pos = getMousePos(canvas, e);
-
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      drawingStar(initialX, initialY, 5, initialX - pos.x, initialY - pos.y);
-    };
-
-    //utility
-    const drawingStar = (
-      cx: number,
-      cy: number,
-      spikes: number,
-      outerRadius: number,
-      innerRadius: number
-    ): void => {
-      let rot = (Math.PI / 2) * 3;
-      let x = cx;
-      let y = cy;
-      const step = Math.PI / spikes;
-
-      ctx.strokeStyle = '#000';
-      ctx.beginPath();
-      ctx.moveTo(cx, cy - outerRadius);
-      for (let i = 0; i < spikes; i++) {
-        x = cx + Math.cos(rot) * outerRadius;
-        y = cy + Math.sin(rot) * outerRadius;
-        ctx.lineTo(x, y);
-        rot += step;
-
-        x = cx + Math.cos(rot) * innerRadius;
-        y = cy + Math.sin(rot) * innerRadius;
-        ctx.lineTo(x, y);
-        rot += step;
-      }
-      ctx.lineTo(cx, cy - outerRadius);
-      ctx.closePath();
-      ctx.lineWidth = 5;
-
-      ctx.stroke();
-
-      ctx.fill();
-    };
-
     //Complex function which handles drawing
-    const handleDrawing = (e: React.MouseEvent<HTMLCanvasElement>): void => {
+    const handleDrawing = (
+      event: React.MouseEvent<HTMLCanvasElement>
+    ): void => {
       //If mouse is not within canvas or not pressed down
       if (!painting) return;
 
@@ -138,30 +63,30 @@ export const Canvas: ForwardRefRenderFunction<HTMLCanvasElement, CanvasProps> =
       ctx.lineWidth = Number(brushWidth);
 
       switch (controlType) {
-        case 'Eraser':
+        case PaintTools.ERASER:
           ctx.strokeStyle = 'white';
-          draw(e);
+          draw(canvas, event, ctx, getMousePos);
           break;
-        case 'Brush':
-          draw(e);
+        case PaintTools.BRUSH:
+          draw(canvas, event, ctx, getMousePos);
           break;
-        case 'Line':
-          drawLine(e);
+        case PaintTools.LINE:
+          drawLine(canvas, event, ctx, getMousePos, initialX, initialY);
           break;
-        case 'Rectangle':
+        case PaintTools.RECTANGLE:
           ctx.lineWidth = 1;
-          drawRectangle(e);
+          drawRectangle(canvas, event, ctx, getMousePos, initialX, initialY);
           break;
-        case 'Circle':
-          drawCircle(e);
+        case PaintTools.CIRCLE:
+          drawCircle(canvas, event, ctx, getMousePos, initialX, initialY);
           break;
-        case 'Star':
-          drawStar(e);
+        case PaintTools.STAR:
+          drawStar(canvas, event, ctx, getMousePos, initialX, initialY);
           break;
       }
       return;
     };
-    /* END of Canvas Basic Drawing*/
+    /* END of Canvas handleDrawing*/
 
     return (
       <canvas

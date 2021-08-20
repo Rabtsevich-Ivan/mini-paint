@@ -2,25 +2,22 @@ import React, { FC, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
-import { useDispatch, useSelector } from 'react-redux';
-import { login } from '../../../../../core/actions/auth';
+import { useSelector } from 'react-redux';
 import {
   FormTitle,
   FormGroup,
   FormError,
   FormGroupLabel,
   FormControl,
-} from './../../../../../global-styles';
+} from './../../../styled';
 import { Inputs } from '../../../../../core/interfaces/inputs';
 import Button from '../../../../../core/components/Buttons/Button';
-import { User } from '../../../../../core/interfaces/user';
 import { selectAuthError } from '../../../../../core/selectors/auth';
 import { auth } from '../../../../../core/firebase/firebase';
+import { AuthProps } from '../../../types';
 
-export const LoginForm: FC = () => {
+export const LoginForm: FC<AuthProps> = ({ onSubmit }) => {
   const history = useHistory();
-  const dispatch = useDispatch();
-
   const errorStatus = useSelector(selectAuthError);
 
   // Useform library
@@ -29,10 +26,6 @@ export const LoginForm: FC = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>();
-  // Submit Handler
-  const onSubmit = (data: User): void => {
-    dispatch(login(data.email, data.password));
-  };
 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
@@ -41,6 +34,10 @@ export const LoginForm: FC = () => {
       }
     });
   }, []);
+
+  const handleError = ({ message }: { message: string }) => (
+    <FormError>{message}</FormError>
+  );
 
   return (
     <form action='' onSubmit={handleSubmit(onSubmit)}>
@@ -54,11 +51,7 @@ export const LoginForm: FC = () => {
           type='email'
           placeholder='Enter email'
         />
-        <ErrorMessage
-          errors={errors}
-          name='email'
-          render={({ message }) => <FormError>{message}</FormError>}
-        />
+        <ErrorMessage errors={errors} name='email' render={handleError} />
       </FormGroup>
 
       <FormGroup>
@@ -69,11 +62,7 @@ export const LoginForm: FC = () => {
           id='password'
           type='password'
         />
-        <ErrorMessage
-          errors={errors}
-          name='password'
-          render={({ message }) => <FormError>{message}</FormError>}
-        />
+        <ErrorMessage errors={errors} name='password' render={handleError} />
       </FormGroup>
       {errorStatus && (
         <FormError id='sub-error'>Incorrect email or password</FormError>

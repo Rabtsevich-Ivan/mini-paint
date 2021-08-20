@@ -1,9 +1,13 @@
-import { ModalActionTypes } from '../constants/actionTypes';
-import { ModalState } from '../interfaces/states';
+import { ModalActionTypes } from './../actions/modal';
 import { Action } from '../interfaces/action';
+import { ModalProperties } from '../interfaces/modalProperties';
+
+export interface ModalState {
+  modal: ModalProperties | null | undefined;
+}
 
 const initialState: ModalState = {
-  modal: false,
+  modal: null,
 };
 
 const modal = (
@@ -14,10 +18,13 @@ const modal = (
     case ModalActionTypes.SHOWMODAL:
       return {
         ...state,
-        modal: true,
+        modal: action.payload,
       };
     case ModalActionTypes.CLOSEMODAL:
-      return initialState;
+      return {
+        ...state,
+        modal: null,
+      };
     default:
       return state;
   }

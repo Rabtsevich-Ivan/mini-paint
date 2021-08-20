@@ -2,7 +2,6 @@ import React, { FC, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
-import { useDispatch } from 'react-redux';
 import { auth } from '../../../../../core/firebase/firebase';
 import {
   FormTitle,
@@ -10,15 +9,13 @@ import {
   FormError,
   FormGroupLabel,
   FormControl,
-} from './../../../../../global-styles';
+} from './../../../styled';
 import { Inputs } from '../../../../../core/interfaces/inputs';
-import { signup } from '../../../../../core/actions/auth';
 import Button from '../../../../../core/components/Buttons/Button';
-import { User } from '../../../../../core/interfaces/user';
+import { AuthProps } from '../../../types';
 
-export const SignUpForm: FC = () => {
+export const SignUpForm: FC<AuthProps> = ({ onSubmit }) => {
   const history = useHistory();
-  const dispatch = useDispatch();
 
   // UseForm library
   const {
@@ -26,10 +23,6 @@ export const SignUpForm: FC = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>();
-  // Submit Handler
-  const onSubmit = (data: User): void => {
-    dispatch(signup(data.email, data.password));
-  };
 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
@@ -38,6 +31,10 @@ export const SignUpForm: FC = () => {
       }
     });
   }, []);
+
+  const handleError = ({ message }: { message: string }) => (
+    <FormError>{message}</FormError>
+  );
 
   return (
     <form action='' onSubmit={handleSubmit(onSubmit)}>
@@ -51,11 +48,7 @@ export const SignUpForm: FC = () => {
           type='email'
           placeholder='Enter email'
         />
-        <ErrorMessage
-          errors={errors}
-          name='email'
-          render={({ message }) => <FormError>{message}</FormError>}
-        />
+        <ErrorMessage errors={errors} name='email' render={handleError} />
       </FormGroup>
 
       <FormGroup>
@@ -66,11 +59,7 @@ export const SignUpForm: FC = () => {
           id='password'
           type='password'
         />
-        <ErrorMessage
-          errors={errors}
-          name='password'
-          render={({ message }) => <FormError>{message}</FormError>}
-        />
+        <ErrorMessage errors={errors} name='password' render={handleError} />
       </FormGroup>
       <Button btnType='formBtn' as='input' type='submit' value='Sign Up' />
     </form>

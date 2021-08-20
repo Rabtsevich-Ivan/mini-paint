@@ -3,10 +3,18 @@ import * as Styled from './styled';
 import { ControlProps } from './types';
 import Button from '../../../../core/components/Buttons/Button';
 import { Header } from '../../../../core/components/Header/Header';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { showModal } from '../../../../core/actions/modal';
-import Modal from '../../../../core/components/Modal/Modal';
-import { ModalState } from '../../../../core/interfaces/states';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faCircle,
+  faEraser,
+  faPaintBrush,
+  faSlash,
+  faSquareFull,
+  faStar,
+} from '@fortawesome/free-solid-svg-icons';
+import { ModalTypes } from '../../../../core/constants/modal';
 
 export const PaintControl: FC<ControlProps> = ({
   handleControl,
@@ -18,13 +26,51 @@ export const PaintControl: FC<ControlProps> = ({
   handleBrushWidth,
 }) => {
   const dispatch = useDispatch();
-  const modalStatus = useSelector(
-    (state: { modal: ModalState }) => state.modal.modal
-  );
+
+  //Handlers
+  const handleBrush = (): void => {
+    handleControl('Brush');
+  };
+
+  const handleEraser = (): void => {
+    handleControl('Eraser');
+  };
+
+  const handleLine = (): void => {
+    handleControl('Line');
+  };
+
+  const handleCircle = (): void => {
+    handleControl('Circle');
+  };
+
+  const handleRectangle = (): void => {
+    handleControl('Rectangle');
+  };
+
+  const handleStar = (): void => {
+    handleControl('Star');
+  };
+
+  const handleClearButton = (): void => {
+    handleClear(context, canvas);
+  };
+
+  const handleShowModal = (): void => {
+    dispatch(
+      showModal({
+        title: 'Please name your creation!',
+        type: ModalTypes.MODAL_FORM,
+        canvas,
+        handleSave,
+      })
+    );
+  };
 
   return (
     <>
       <Header condition={true} />
+
       <Styled.ToolSection>
         <Styled.ToolSectionTitle>Brush Color</Styled.ToolSectionTitle>
         <Styled.BtnColor
@@ -51,91 +97,49 @@ export const PaintControl: FC<ControlProps> = ({
         <Styled.ToolSectionTitle>Tools</Styled.ToolSectionTitle>
         <Styled.ToolGrid>
           <div>
-            <Styled.ToolBtn
-              onClick={() => {
-                handleControl('Brush');
-              }}
-              id='Brush'
-            >
-              <i className='fas fa-paint-brush'></i>
+            <Styled.ToolBtn onClick={handleBrush} id='Brush'>
+              <FontAwesomeIcon icon={faPaintBrush} />
             </Styled.ToolBtn>
           </div>
           <div>
-            <Styled.ToolBtn
-              onClick={() => {
-                handleControl('Eraser');
-              }}
-              id='eraser'
-            >
-              <i className='fas fa-eraser'></i>
+            <Styled.ToolBtn onClick={handleEraser} id='eraser'>
+              <FontAwesomeIcon icon={faEraser} />
             </Styled.ToolBtn>
           </div>
           <div>
-            <Styled.ToolBtn
-              onClick={() => {
-                handleControl('Line');
-              }}
-              id='line'
-            >
-              <i className='fas fa-slash'></i>
+            <Styled.ToolBtn onClick={handleLine} id='line'>
+              <FontAwesomeIcon icon={faSlash} />
             </Styled.ToolBtn>
           </div>
           <div>
-            <Styled.ToolBtn
-              onClick={() => {
-                handleControl('Circle');
-              }}
-              id='circle'
-            >
-              <i className='fas fa-circle'></i>
+            <Styled.ToolBtn onClick={handleCircle} id='circle'>
+              <FontAwesomeIcon icon={faCircle} />
             </Styled.ToolBtn>
           </div>
           <div>
-            <Styled.ToolBtn
-              onClick={() => {
-                handleControl('Rectangle');
-              }}
-              id='rectangle'
-            >
-              <i className='fas fa-square-full'></i>
+            <Styled.ToolBtn onClick={handleRectangle} id='rectangle'>
+              <FontAwesomeIcon icon={faSquareFull} />
             </Styled.ToolBtn>
           </div>
           <div>
-            <Styled.ToolBtn
-              onClick={() => {
-                handleControl('Star');
-              }}
-              id='star'
-            >
-              <i className='fas fa-star'></i>
+            <Styled.ToolBtn onClick={handleStar} id='star'>
+              <FontAwesomeIcon icon={faStar} />
             </Styled.ToolBtn>
           </div>
         </Styled.ToolGrid>
       </Styled.ToolSection>
 
       <Styled.ToolSection>
-        <Button
-          onClick={() => {
-            dispatch(showModal());
-          }}
-          id='canvas-save'
-          btnType='canvasSave'
-        >
+        <Button onClick={handleShowModal} id='canvas-save' btnType='canvasSave'>
           Save
         </Button>
       </Styled.ToolSection>
 
       <Styled.ToolSection>
-        <Button
-          onClick={() => {
-            handleClear(context, canvas);
-          }}
-          id='canvas-clear'
-        >
+        <Button onClick={handleClearButton} id='canvas-clear'>
           Clear
         </Button>
       </Styled.ToolSection>
-      {modalStatus && <Modal canvas={canvas} handleSave={handleSave} />}
     </>
   );
 };
